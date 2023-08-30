@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email.text.trim(),
         password: pwd.text.trim(),
       );
+
       print("Login Success");
       ref
           .doc(userData['Email'])
