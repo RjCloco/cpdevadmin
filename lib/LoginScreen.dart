@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Padding(
-                      padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 50.0,top: 60.0): ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left: 120.0,top: 10.0):EdgeInsets.only(left: 250.0,top: 60.0),
+                      padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 50.0,top: 60.0): ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left: 120.0,top: 10.0):EdgeInsets.only(left: 190.0,top: 30.0),
                       //padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 15.0,top: 60.0): const EdgeInsets.only(left: 185.0),
                       child: Text("CHARGE PARTNERS",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0),),
                       //child: Image.asset('assets/image2.png'),
