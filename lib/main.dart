@@ -1,6 +1,8 @@
 import 'package:cpdevadmin/LoginScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'HomePage.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,8 +21,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: LoginScreen(),
+      home: MainPage(),
+      //hello
       debugShowCheckedModeBanner: false,
     );
   }
+}
+
+class MainPage extends StatelessWidget {
+  @override
+  Widget build (BuildContext context) => Scaffold(
+    body: StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasData) {
+            return HomePage();
+        } else {
+          return LoginScreen();
+        }
+      },
+    ),
+  ); // Scaffold
 }
