@@ -74,80 +74,81 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _showResetEmailDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        GlobalKey<FormState>  Form_key =  GlobalKey<FormState>();
-        return AlertDialog(
-          title: Text('Reset Password'),
-          content: Form(
-            key: Form_key,
-            child: TextFormField(
-              decoration: InputDecoration(labelText: 'Email'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  ResetEmail = value;
-                });
-              },
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (Form_key.currentState!.validate()) {
-                  Navigator.of(context).pop(); // Close the dialog
-                  ForgotPassword();
-                }
-              },
-              child: Text('Reset'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showResetEmailDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       GlobalKey<FormState>  Form_key =  GlobalKey<FormState>();
+  //       return AlertDialog(
+  //         title: Text('Reset Password'),
+  //         content: Form(
+  //           key: Form_key,
+  //           child: TextFormField(
+  //             decoration: InputDecoration(labelText: 'Email'),
+  //             validator: (value) {
+  //               if (value == null || value.isEmpty) {
+  //                 return 'Please enter your email';
+  //               }
+  //               return null;
+  //             },
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 ResetEmail = value;
+  //               });
+  //             },
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop(); // Close the dialog
+  //             },
+  //             child: Text('Cancel'),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               if (Form_key.currentState!.validate()) {
+  //                 Navigator.of(context).pop(); // Close the dialog
+  //                 ForgotPassword();
+  //               }
+  //             },
+  //             child: Text('Reset'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   void ForgotPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: AdminEmail);
-      _showSuccessDialog();
+      // _showSuccessDialog();
     } catch (e) {
       _showErrorDialog(e.toString());
     }
   }
 
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Password Reset Email Sent'),
-          content: Text('A password reset email has been sent to $AdminEmail.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //
+  // void _showSuccessDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Password Reset Email Sent'),
+  //         content: Text('A password reset email has been sent to $AdminEmail.'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop(); // Close the dialog
+  //             },
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   void _showErrorDialog(String errorMessage) {
     showDialog(
@@ -211,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               },
             ),
-            InkWell(onTap: _showResetEmailDialog, child: Text("Forgot Password?")),
+            InkWell(onTap: ForgotPassword, child: Text("Forgot Password?")),
             SizedBox(
               height: 10,
             ),
