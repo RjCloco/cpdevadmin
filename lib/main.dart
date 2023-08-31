@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'HomePage.dart';
 import 'firebase_options.dart';
 
-void main() async {
+Future<void> main()  async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -21,27 +21,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: MainPage(),
+      home: LoginScreen(),
       //hello
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MainPage extends StatelessWidget {
-  @override
-  Widget build (BuildContext context) => Scaffold(
-    body: StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasData) {
-            return HomePage();
-        } else {
-          return LoginScreen();
-        }
-      },
-    ),
-  ); // Scaffold
-}
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build (BuildContext context) => Scaffold(
+//     body: StreamBuilder<User?>(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return CircularProgressIndicator();
+//         } else if (snapshot.hasData) {
+//             return HomePage();
+//         } else {
+//           return LoginScreen();
+//         }
+//       },
+//     ),
+//   ); // Scaffold
+// }

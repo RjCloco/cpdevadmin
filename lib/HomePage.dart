@@ -1,5 +1,7 @@
+import 'package:cpdevadmin/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -13,6 +15,8 @@ class _HomePageState extends State<HomePage> {
     print("logout");
     try {
       await FirebaseAuth.instance.signOut();
+      print(FirebaseAuth.instance.authStateChanges());
+      Navigator.push(context,MaterialPageRoute(builder: (context)=> LoginScreen()));
     } catch (e) {
       print(e);
     }
