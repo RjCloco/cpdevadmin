@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'HomePage.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -56,8 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text.trim(),
         password: pwd.text.trim(),
-      );
-
+      ).then((value){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+      });
       print("Login Success");
       ref
           .doc(userData['Email'])
