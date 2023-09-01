@@ -17,8 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = new TextEditingController();
   TextEditingController pwd = new TextEditingController();
   bool visibility = true;
-  final _emailKey = GlobalKey<FormState>();
-  final _pwdKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+
   RegExp pass_valid = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
   RegExp email_valid = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
 
@@ -101,22 +101,28 @@ class _LoginScreenState extends State<LoginScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          title: Center(child: Text('Forgot Password',style: TextStyle(fontWeight: FontWeight.bold),)),
+          title: Center(child: Text('Forgot Password',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
           content: Container(
-            height: 120,
+            height: 130,
             child: Form(
               key: Form_key,
               child: Column(
                 children: [
-                  Text("Enter Your Registered email ID to reset password"),
+                  Text("Enter Your Registered email ID to reset password",style: TextStyle(fontWeight: FontWeight.bold),),
+                  SizedBox(height: 10,),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Enter Email'),
+                    decoration: InputDecoration(
+                        labelText: 'Enter Email',
+                      border: OutlineInputBorder(),
+
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
                       return null;
                     },
+
                     onChanged: (value) {
                       setState(() {
                         ResetEmail = value;
@@ -127,20 +133,51 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (Form_key.currentState!.validate()) {
-                            Navigator.of(context).pop(); // Close the dialog
-                            ForgotPassword();
-                          }
-                        },
-                        child: Text('Reset'),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 26.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (Form_key.currentState!.validate()) {
+                              Navigator.of(context).pop(); // Close the dialog
+                              ForgotPassword();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors.mainBlueColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 26.0,right: 26.0,top:5.0,bottom: 5.0),
+                            child: Text('Reset'),
+                          ),
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                        child: Text('Cancel'),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 26.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            primary:AppColors.mainBlueColor,
+                            side: const BorderSide(
+                              width: 1.0,
+                              color: AppColors.mainBlueColor,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                            // Customize other styling properties here
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 26.0,right: 26.0,top:5.0,bottom: 5.0),
+                            child: Text('Cancel',style: TextStyle(color: AppColors.mainBlueColor),),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -227,26 +264,26 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ResponsiveWidget.isSmallScreen(context) ? const SizedBox() : Expanded(
-              child: Container(
-                foregroundDecoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage('assets/image3.png'),
-                      fit: BoxFit.cover,
-                    )
-                ),
+            ResponsiveWidget.isSmallScreen(context) ? const SizedBox() : Container(
+              width: width/1.6,
+              foregroundDecoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage('assets/image3.png'),
+                    fit: BoxFit.cover,
+                  )
               ),
             ),
             Expanded(
               child: Container(
+                width: width*1.2,
                 height: height,
-                margin: EdgeInsets.symmetric(horizontal: ResponsiveWidget.isSmallScreen(context)? height * 0.032 : height * 0.12),
+                margin: EdgeInsets.symmetric(horizontal: ResponsiveWidget.isSmallScreen(context)? height * 0.032 : ResponsiveWidget.isMediumScreen(context)?height * 0.032:height * 0.12),
                 color: AppColors.backColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 50.0,top: 60.0): ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left: 170.0,top: 60.0):EdgeInsets.only(left: 250.0,top: 60.0),
+                      padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 85.0,top: 60.0): ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left: 170.0,top: 60.0):EdgeInsets.only(left: 150.0,top: 60.0),
                       child: Container(
                           height: 100,
                           width: 100,
@@ -254,117 +291,114 @@ class _LoginScreenState extends State<LoginScreen> {
                               image: DecorationImage(image: AssetImage('assets/image2.png'),
                                   fit: BoxFit.cover)
                           ),
-                          child: SizedBox(height: height * 0.014)
+                          child: SizedBox(height: width * 0.014)
                       ),
                     ),
                     Padding(
-                      padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 50.0,top: 60.0): ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left: 120.0,top: 10.0):EdgeInsets.only(left: 190.0,top: 30.0),
+                      padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 55.0,top: 60.0): ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left: 120.0,top: 10.0):EdgeInsets.only(left: 90.0,top: 30.0),
                       //padding: ResponsiveWidget.isMediumScreen(context) ?EdgeInsets.only(left: 15.0,top: 60.0): const EdgeInsets.only(left: 185.0),
-                      child: Text("CHARGE PARTNERS",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0),),
+                      child: Text("CHARGE PARTNERS",style: TextStyle(fontWeight: FontWeight.bold,fontSize: ResponsiveWidget.isMediumScreen(context)?20.0:25.0),),
                       //child: Image.asset('assets/image2.png'),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(45.0),
+                      padding: const EdgeInsets.all(40.0),
                       child: SizedBox(
-
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Text(
-                        'Email',
-                        style: ralewayStyle.copyWith(
-                          fontSize: 12.0,
-                          color: AppColors.blueDarkColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-
-                      ),
-                    ),
-                    const SizedBox(height: 6.0),
                     Form(
-                      key: _emailKey,
-                      child: Container(
-                        height: 50.0,
-                        width: width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.0),
-                          color: AppColors.whiteColor,
-                        ),
-                        child: TextFormField(
-                          controller: email,
-                          style: ralewayStyle.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.blueDarkColor,
-                            fontSize: 12.0,
-                          ),
-                          validator: (email)  {
-                            if(!validateEmail(email!)){
-                              return 'Enter a valid Email';
-                            }
+                      key: _formKey, // Use a single GlobalKey for the form
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              'Email',
+                              style: ralewayStyle.copyWith(
+                                fontSize: 12.0,
+                                color: AppColors.blueDarkColor,
+                                fontWeight: FontWeight.w700,
+                              ),
 
-                          },
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.only(top:7.0,left: 20.0),
-                            hintText: 'Enter Email',
-                            hintStyle: ralewayStyle.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blueDarkColor.withOpacity(0.5),
-                              fontSize: 12.0,
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: height * 0.014),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Text('Password',
-                        style: ralewayStyle.copyWith(
-                          fontSize: 12.0,
-                          color: AppColors.blueDarkColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-
-                    ),
-                    const SizedBox(height: 6.0),
-                    Form(
-                      key: _pwdKey,
-                      child: Container(
-                        height: 50.0,
-                        width: width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.0),
-                          color: AppColors.whiteColor,
-                        ),
-                        child: TextFormField(
-                          style: ralewayStyle.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.blueDarkColor,
-                            fontSize: 12.0,
+                          SizedBox(height: 6.0),
+                          TextFormField(
+                            controller: email,
+                            style: ralewayStyle.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blueDarkColor,
+                              fontSize: 12.0,
+                            ),
+                            validator: (email) {
+                              if (!validateEmail(email!)) {
+                                return 'Enter a valid Email';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              filled: true, //<-- SEE HERE
+                              fillColor: Color(0xFFDEE3E7),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.only(top: 7.0, left: 20.0),
+                              hintText: 'Enter your Email here',
+                              hintStyle: ralewayStyle.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blueDarkColor.withOpacity(0.5),
+                                fontSize: 12.0,
+                              ),
+                            ),
                           ),
-                          controller: pwd,
-                          obscureText: visibility,
-                          validator: (value){
-                            if(value!.isEmpty){
-                              return "Please enter password";
-                            }
-                          },
-
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.only(top: 16.0,left: 20.0),
-                              hintText: 'Enter Password',
-
-                              suffixIcon: IconButton(onPressed: (){
-                                setState(() {
-                                  visibility=!visibility;
-                                });
-                              }, icon: Icon(visibility==true?Icons.remove_red_eye:Icons.visibility_off))
+                          SizedBox(height: height * 0.014),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              'Password',
+                              style: ralewayStyle.copyWith(
+                                fontSize: 12.0,
+                                color: AppColors.blueDarkColor,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(height: 6.0),
+                          TextFormField(
+                            style: ralewayStyle.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blueDarkColor,
+                              fontSize: 12.0,
+                            ),
+                            controller: pwd,
+                            obscureText: visibility,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter password";
+                              }
+                            },
+                            decoration: InputDecoration(
+                              filled: true, //<-- SEE HERE
+                              fillColor:  Color(0xFFDEE3E7),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.only(top: 16.0, left: 20.0),
+                              hintText: 'Enter your Password here',
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    visibility = !visibility;
+                                  });
+                                },
+                                icon: Icon(
+                                  visibility == true ? Icons.remove_red_eye : Icons.visibility_off,color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 
@@ -378,7 +412,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text('Forgot Password?',
                           style: ralewayStyle.copyWith(
                             fontSize: 12.0,
-                            color: AppColors.mainBlueColor,
+                            color: Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -395,29 +429,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     Padding(
-                      padding: ResponsiveWidget.isMediumScreen(context)?EdgeInsets.only(left:50.0):EdgeInsets.only(left:200.0),
+                      padding: ResponsiveWidget.isMediumScreen(context)?EdgeInsets.only(left:85.0):ResponsiveWidget.isSmallScreen(context)?EdgeInsets.only(left:160.0):EdgeInsets.only(left:130.0),
                       //padding: const EdgeInsets.only(left:200.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          print(_pwdKey.currentState!.validate());
-                          if (_emailKey.currentState!.validate() && _pwdKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate()) {
                             AdminSignIn();
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: AppColors.mainBlueColor,
+                          primary: Color(0xFF1046A8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
                         child: Padding(
-                          padding: ResponsiveWidget.isMediumScreen(context)?EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0):ResponsiveWidget.isSmallScreen(context)?EdgeInsets.symmetric(horizontal: 10.0, vertical: 18.0):EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0),
+                          padding: ResponsiveWidget.isMediumScreen(context)?EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0):ResponsiveWidget.isSmallScreen(context)?EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0):EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
                          // padding: ResponsiveWidget.isMediumScreen(context)?EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0):EdgeInsets.symmetric(horizontal: 70.0, vertical: 18.0),
                           child: Text(
                             'Login',
                             style: ralewayStyle.copyWith(
                               fontWeight: FontWeight.w700,
-                              color: AppColors.whiteColor,
+                              color: Colors.white,
                               fontSize: 16.0,
                             ),
                           ),
