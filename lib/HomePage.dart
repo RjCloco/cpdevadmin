@@ -1,7 +1,6 @@
 import 'package:cpdevadmin/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,6 +24,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
     return Scaffold(
       // body: Column(
       //   children: [
@@ -435,10 +436,10 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Positioned(
                       top: 0,
-                        child: SvgPicture.asset(
-                          'assets/graphic_slide.svg',
-                          semanticsLabel: 'My SVG Image',
-                        ),
+                        child: SizedBox(
+                          height: 150,
+                            width: w,
+                            child: Image.asset('assets/graphic_slide.jpeg')),
                     ),
                   ],
                 ),
