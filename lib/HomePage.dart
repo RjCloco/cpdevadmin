@@ -1,6 +1,9 @@
 import 'package:cpdevadmin/LoginScreen.dart';
+import 'package:cpdevadmin/Map.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'SIdeBar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -39,410 +42,116 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(
             flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                 color: Color(0xFF242B5C)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 18.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(height: 100,),
-                        SizedBox(
-                          height:60,
-                            width: 60,
-                            child: Image.asset('assets/image2.png')
-                        ),
-                        Text("CHARGE PARTNERS",style: TextStyle(color: Colors.white,fontSize: 15),)
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.bar_chart,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Dashboard",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.credit_card,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Business KPI",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.alarm,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Alarm Summary",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.earbuds_battery,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Charging Network",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.web_asset,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Asset Management",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.groups,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("CRM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.speaker_phone,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("RFID Management",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.supervised_user_circle_outlined,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Accounts",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.mail_outline,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Tariff Management",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.support_agent,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("CPO Support",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.notifications,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Notifications",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.add_chart_rounded,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Reports",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.settings,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Settings",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    GestureDetector(
-                      onTap: (){
-                        print("tapped");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.help,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Help",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: SideBar(),
           ),
           Expanded(
             flex: 5,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFFFFF)
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF242B5C), // Dark blue background color
+                      Colors.black, // Black color for gradient
+                    ],
+                  ),
                 ),
                 child: Stack(
                   children: [
                     Positioned(
                       top: 0,
-                        child: SizedBox(
-                          height: 150,
-                            width: w,
-                            child: Image.asset('assets/graphic_slide.jpeg')),
+                      child: SizedBox(
+                        child: Container(
+                          height: 200,
+                          width: 1200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/graphic_slide.jpeg"),
+                              fit: BoxFit.fill
+                            )
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 15,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Hello Devs!",style: TextStyle(fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold),),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 25,
+                                          width: 200,
+                                          child: TextFormField(
+                                            // controller: _searchController,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Search location..',
+                                              filled: true, // Add a background color to the TextField
+                                              fillColor:  Color(0xFFDEE3E7), // Set the background color of the TextField
+                                              prefixIcon: IconButton(
+                                                onPressed: (){},
+                                                icon: Icon(Icons.search),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(Icons.settings,color: Colors.white,),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(Icons.notifications,color: Colors.white,),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(Icons.mail,color: Colors.white,),
+                                        ),
+
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Text("We are on a mission to help like you beautiful projects for free",style: TextStyle(fontSize: 13,color: Colors.white,),),
+                                SizedBox(height: 20,),
+                                Row(
+                                  children: [
+                                    Text("Home ",style: TextStyle(color: Colors.grey),),
+                                    Text("/ Dashboard",style: TextStyle(color: Colors.white),)
+                                  ],
+                                ),
+                                SizedBox(height: 5,),
+                                Text("Dashboard",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
+                              ],
+                            ),
+                          )
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 160,
+                      left: 20,
+                      child: Container(
+                        width: 1160, // Set the width as needed
+                        height: 550, // Set the height as needed
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top:20.0,right: 18.0,left: 18.0,bottom: 18.0),
+                          child: MapDisplay(),
+                          // child: Text(""),
+                        ),
+                      ),
                     ),
                   ],
                 ),
+
               )
           )
         ],

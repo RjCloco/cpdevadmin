@@ -1,6 +1,6 @@
 import 'package:cpdevadmin/LoginScreen.dart';
 import 'package:cpdevadmin/test.dart';
-import 'package:cpdevadmin/testmap.dart';
+import 'package:cpdevadmin/Map.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: Map2(),
+      title: 'Charge Partners Admin Panel',
+      home: HomePage(),
       //hello
       debugShowCheckedModeBanner: false,
     );
