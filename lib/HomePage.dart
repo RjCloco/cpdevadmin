@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                                     )
                                   ],
                                 ),
-                                Text("We are on a mission to help like you beautiful projects for free",style: TextStyle(fontSize: 13,color: Colors.white,),),
+                                Text("We are on a mission to help you plugin for a better tomorrow",style: TextStyle(fontSize: 13,color: Colors.white,),),
                                 SizedBox(height: 20,),
                                 Row(
                                   children: [

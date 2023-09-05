@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Provider.dart';
 class SideBar extends StatefulWidget {
   const SideBar({super.key});
 
@@ -9,6 +12,8 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
+    final sidebarProvider = Provider.of<SidebarProvider>(context);
+    final currentPageIndex = sidebarProvider.currentPageIndex;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -44,53 +49,70 @@ class _SideBarState extends State<SideBar> {
               ),
               GestureDetector(
                 onTap: (){
-                  print("tapped");
+                  sidebarProvider.navigateToPage(0);
+                  Navigator.pushReplacementNamed(context, '/Dashboard');
                 },
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black26,
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child:  Padding(
-                        padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                        child: Icon(Icons.bar_chart,color: Colors.blue,),
-                      ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: currentPageIndex == 0 ? Colors.black26:null,
+                      borderRadius: BorderRadius.circular(10)
                     ),
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black26,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child:  Padding(
+                            padding: const EdgeInsets.only(left: 5.0,right: 5.0),
+                            child: Icon(Icons.bar_chart,color: Colors.blue,),
+                          ),
+                        ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18.0),
-                      child: Text("Dashboard",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                    )
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: Text("Dashboard",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        )
 
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 25,),
-              GestureDetector(
-                onTap: (){
-                  print("tapped");
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black26,
-                          borderRadius: BorderRadius.circular(10)
+              Container(
+                decoration: BoxDecoration(
+                    color: currentPageIndex == 1 ? Colors.black26: null
+                ),
+                child: GestureDetector(
+                  onTap: (){
+                    sidebarProvider.navigateToPage(1);
+                    //Navigator.pushReplacementNamed(context, '/Dashboard');
+                  },
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black26,
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child:  Padding(
+                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
+                          child: Icon(Icons.credit_card,color: Colors.blue,),
+                        ),
                       ),
-                      child:  Padding(
-                        padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                        child: Icon(Icons.credit_card,color: Colors.blue,),
-                      ),
-                    ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18.0),
-                      child: Text("Business KPI",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                    )
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18.0),
+                        child: Text("Business KPI",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                      )
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 25,),

@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = new TextEditingController();
   TextEditingController pwd = new TextEditingController();
+  TextEditingController Forgotpwd = new TextEditingController();
   bool visibility = true;
   final _formKey = GlobalKey<FormState>();
 
@@ -75,7 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email.text,
         password: pwd.text,
       ).then((_){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+        Navigator.pushReplacementNamed(context, '/Dashboard');
+         // Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
       });
       print("Login Success");
       ref
@@ -103,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           title: Center(child: Text('Forgot Password',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
           content: Container(
-            height: 130,
+            height: 150,
             child: Form(
               key: Form_key,
               child: Column(
@@ -111,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text("Enter Your Registered email ID to reset password",style: TextStyle(fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   TextFormField(
+                    controller: Forgotpwd,
                     decoration: InputDecoration(
                         labelText: 'Enter Email',
                       border: OutlineInputBorder(),
@@ -119,6 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
+                      }
+                      else if(!validateEmail(Forgotpwd.text)){
+                        return "Invalid Email Format";
                       }
                       return null;
                     },
@@ -193,10 +199,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void ForgotPassword() async {
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: AdminEmail);
-      _showSuccessDialog();
+      if (validateEmail(ResetEmail)) {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: ResetEmail);
+        _showSuccessDialog();
+      } else {
+        throw "Invalid email format";
+      }
     } catch (e) {
-      _showErrorDialog(e.toString());
+      String errorMessage = "An error occurred while resetting the password";
+      if (e is String) {
+        errorMessage = e;
+      }
+      _showErrorDialog(errorMessage);
       print("error: forgot pwd: $e");
     }
   }
@@ -222,21 +236,40 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showErrorDialog(String errorMessage) {
+  void _showErrorDialog(String email) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text(errorMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('OK'),
-            ),
-          ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/error.jpeg', // Replace with the path to your cross image asset
+                width: 48.0, // Adjust the width as needed
+                height: 48.0, // Adjust the height as needed
+              ),
+              SizedBox(height: 20.0),
+              Text(
+                'Entered "${Forgotpwd.text}" ID is invalid',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
         );
       },
     );

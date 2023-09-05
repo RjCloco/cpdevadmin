@@ -165,6 +165,13 @@ class _MapDisplayState extends State<MapDisplay> {
             Marker(
               markerId:MarkerId(document['StationName']),
               position: LatLng(document['Latitude'],document['Longitude']),
+                infoWindow: InfoWindow(
+                        title: document['StationName'],
+                        snippet:document['Description'],
+                        onTap: () {
+                          _onMarkerTapped(document['ChargingStation'], document['Description'],document['Latitude'], document['Longitude']);
+                        },
+                      ),
                 onTap: () {
                         _customInfoWindowController.addInfoWindow!(
                           GestureDetector(
@@ -548,27 +555,27 @@ class _MapDisplayState extends State<MapDisplay> {
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
-  // addCustomIcon()  async{
-  //   BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(0.5,0.5)),
-  //       'assets/img.png')
-  //       .then((icon) {
-  //     setState(() {
-  //       markerIcon = icon;
-  //     });
-  //     // markerIcon = icon;
-  //   }
-  //   );
-  //
-  //   final Uint8List markIcons = await getImages('assets/img.png', 50);
-  // }
-  //
-  // Future<Uint8List> getImages(String path, int width) async{
-  //   ByteData data = await rootBundle.load(path);
-  //   ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetHeight: width);
-  //   ui.FrameInfo fi = await codec.getNextFrame();
-  //   return(await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
-  //
-  // }
+  addCustomIcon()  async{
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(0.5,0.5)),
+        'assets/image2.png')
+        .then((icon) {
+      setState(() {
+        markerIcon = icon;
+      });
+      // markerIcon = icon;
+    }
+    );
+
+    final Uint8List markIcons = await getImages('assets/image2.png', 50);
+  }
+
+  Future<Uint8List> getImages(String path, int width) async{
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetHeight: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return(await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+
+  }
 
   void _addMarker(double latitude, double longitude, String name, String snippet) {
     final newMarker = Marker(
@@ -813,10 +820,10 @@ class _MapDisplayState extends State<MapDisplay> {
 
   @override
   void initState() {
-    DBAddStation();
+    // DBAddStation();
     _fetchData();
     getCurrentLocation();
-    // addCustomIcon();
+     addCustomIcon();
 
 
     super.initState();
