@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
             child: SideBar(),
           ),
           Expanded(
+
             flex: 5,
               child: Container(
                 decoration: BoxDecoration(
