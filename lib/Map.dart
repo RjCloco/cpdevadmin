@@ -67,6 +67,7 @@ library maps_launcher;
 import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:the_widget_marker/the_widget_marker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:math';
@@ -121,20 +122,24 @@ class _MapDisplayState extends State<MapDisplay> {
     });
   }
 
-  void _fetchData() async {
+  void _fetchData() {
     // Get a reference to the 'StationManagement' collection
     CollectionReference stationCollection = FirebaseFirestore.instance.collection('StationManagement');
 
-    // Fetch the documents in the collection
-    QuerySnapshot querySnapshot = await stationCollection.where('ActiveStatus' ,isEqualTo: true).get();
+    stationCollection.where('ActiveStatus', isEqualTo: true).get().then((querySnapshot) {
+      // Execute the asynchronous work first
+      setState(() {
+        stationData = querySnapshot.docs;
+      });
 
-    // Store the documents in the stationData list
-    setState(() {
-      stationData = querySnapshot.docs;
+      // Then, update the state synchronously
+      AddStationdata();
+    }).catchError((error) {
+      // Handle any errors that occur during the data fetch
+      print('Error fetching data: $error');
     });
-
-    AddStationdata();
   }
+
 
   Future<void> DBAddStation()async {
     String collectionName = 'StationManagement'; // Replace with your desired collection name
@@ -160,7 +165,7 @@ class _MapDisplayState extends State<MapDisplay> {
 
   void  AddStationdata() {
     for (var document in stationData) {
-      setState(() {
+      setState(() async {
         _otherMarkers.add(
             Marker(
               markerId:MarkerId(document['StationName']),
@@ -172,57 +177,17 @@ class _MapDisplayState extends State<MapDisplay> {
                           _onMarkerTapped(document['ChargingStation'], document['Description'],document['Latitude'], document['Longitude']);
                         },
                       ),
-                onTap: () {
-                        _customInfoWindowController.addInfoWindow!(
-                          GestureDetector(
-                            onTap: (){
-                              _onMarkerTapped(document['StationName'], document['Description'], document['Latitude'], document['Longitude']);
-                            },
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.green[700],
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.account_circle,
-                                          color: Colors.white,
-                                          size: 30,
-                                        ),
-                                        Text(
-                                          document['StationName'],
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        Text(
-                                          document['Description'],
-                                          style: TextStyle(color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                ),
-                                Triangle.isosceles(
-                                  edge: Edge.BOTTOM,
-                                  child: Container(
-                                    color: Colors.green[700],
-                                    width: 20.0,
-                                    height: 10.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          lakshmicomplex,
-                        );
-                      },
-            )
+              // icon: markerIcon,
+                icon: await MarkerIcon.downloadResizePictureCircle(
+                'assets/error.jpeg',
+                size: 150,
+                addBorder: true,
+                borderColor: Colors.white,
+                borderSize: 15
+                ),
+
+        ),
+
         );
       });
 
@@ -231,531 +196,35 @@ class _MapDisplayState extends State<MapDisplay> {
     // print(_otherMarkers);
   }
 
-
-
-  // late List<Marker> _otherMarkers = [
-  //   Marker(
-  //     markerId: const MarkerId("Lakshmi Complex"),
-  //     position: lakshmicomplex,
-  //     onTap: () {
-  //       _customInfoWindowController.addInfoWindow!(
-  //         GestureDetector(
-  //           onTap: (){
-  //             _onMarkerTapped('Lakshmi Complex', 'Charging station',11.0169, 76.9655);
-  //           },
-  //           child: Column(
-  //             children: [
-  //               Expanded(
-  //                 child: Container(
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.green[700],
-  //                     borderRadius: BorderRadius.circular(4),
-  //                   ),
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Icon(
-  //                         Icons.account_circle,
-  //                         color: Colors.white,
-  //                         size: 30,
-  //                       ),
-  //                       Text(
-  //                         "Lakshmi complex",
-  //                         style: TextStyle(color: Colors.black),
-  //                       ),
-  //                       Text(
-  //                         "Charging station",
-  //                         style: TextStyle(color: Colors.white),
-  //                       )
-  //                     ],
-  //                   ),
-  //                   width: double.infinity,
-  //                   height: double.infinity,
-  //                 ),
-  //               ),
-  //               Triangle.isosceles(
-  //                 edge: Edge.BOTTOM,
-  //                 child: Container(
-  //                   color: Colors.green[700],
-  //                   width: 20.0,
-  //                   height: 10.0,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         lakshmicomplex,
-  //       );
-  //     },
-  //     // infoWindow: InfoWindow(
-  //     //   title: 'Lakshmi Complex',
-  //     //   snippet: 'Charging station',
-  //     //   onTap: () {
-  //     //     _onMarkerTapped('Lakshmi Complex', 'Charging station',11.0169, 76.9655);
-  //     //   },
-  //     // ),
-  //     icon: BitmapDescriptor.defaultMarker,
-  //   ),
-  //   Marker(
-  //     markerId: const MarkerId("Fun Mall"),
-  //     position: funmall,
-  //     onTap: () {
-  //       _customInfoWindowController.addInfoWindow!(
-  //         GestureDetector(
-  //           onTap: (){
-  //             _onMarkerTapped('Fun Mall', 'Mall',11.0247, 77.0106);
-  //           },
-  //           child: Column(
-  //             children: [
-  //               Expanded(
-  //                 child: Container(
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.green[700],
-  //                     borderRadius: BorderRadius.circular(4),
-  //                   ),
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Icon(
-  //                         Icons.account_circle,
-  //                         color: Colors.white,
-  //                         size: 30,
-  //                       ),
-  //                       Text(
-  //                         "Fun Mall",
-  //                         style: TextStyle(color: Colors.black),
-  //                       ),
-  //                       Text(
-  //                         "Mall",
-  //                         style: TextStyle(color: Colors.white),
-  //                       )
-  //                     ],
-  //                   ),
-  //                   width: double.infinity,
-  //                   height: double.infinity,
-  //                 ),
-  //               ),
-  //               Triangle.isosceles(
-  //                 edge: Edge.BOTTOM,
-  //                 child: Container(
-  //                   color: Colors.green[700],
-  //                   width: 20.0,
-  //                   height: 10.0,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         funmall,
-  //       );
-  //     },
-  //     // infoWindow: InfoWindow(
-  //     //   title: 'Fun Mall',
-  //     //   snippet: 'Mall',
-  //     //   onTap: () {
-  //     //     _onMarkerTapped('Fun Mall', 'Mall',11.0247, 77.0106);
-  //     //   },
-  //     // ),
-  //     icon: markerIcon,
-  //   ),
-  //   Marker(
-  //     markerId: const MarkerId("Race Course"),
-  //     position: racecourse,
-  //     onTap: () {
-  //       _customInfoWindowController.addInfoWindow!(
-  //         GestureDetector(
-  //           onTap: (){
-  //             _onMarkerTapped('Race Course', 'Hang out spots',10.9991, 76.9773);
-  //           },
-  //           child: Column(
-  //             children: [
-  //               Expanded(
-  //                 child: Container(
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.green[700],
-  //                     borderRadius: BorderRadius.circular(4),
-  //                   ),
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Icon(
-  //                         Icons.account_circle,
-  //                         color: Colors.white,
-  //                         size: 30,
-  //                       ),
-  //                       Text(
-  //                         "Race Course",
-  //                         style: TextStyle(color: Colors.black),
-  //                       ),
-  //                       Text(
-  //                         "Hang out spots",
-  //                         style: TextStyle(color: Colors.white),
-  //                       )
-  //                     ],
-  //                   ),
-  //                   width: double.infinity,
-  //                   height: double.infinity,
-  //                 ),
-  //               ),
-  //               Triangle.isosceles(
-  //                 edge: Edge.BOTTOM,
-  //                 child: Container(
-  //                   color: Colors.green[700],
-  //                   width: 20.0,
-  //                   height: 10.0,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         racecourse,
-  //       );
-  //     },
-  //
-  //     // infoWindow: InfoWindow(
-  //     //   title: 'Race Course',
-  //     //   snippet: 'Hang out spots',
-  //     //   onTap: () {
-  //     //     _onMarkerTapped('Race Course', 'Hang out spots',10.9991, 76.9773);
-  //     //   },
-  //     // ),
-  //
-  //     // icon: BitmapDescriptor.defaultMarker,
-  //     icon: markerIcon,
-  //   ),
-  //   Marker(
-  //     markerId: const MarkerId("Prozone Mall"),
-  //     position: prozone,
-  //     onTap: () {
-  //       _customInfoWindowController.addInfoWindow!(
-  //         GestureDetector(
-  //           onTap: (){
-  //             _onMarkerTapped('Prozone Mall', 'Mall',11.0548, 76.9941);
-  //           },
-  //           child: Column(
-  //             children: [
-  //               Expanded(
-  //                 child: Container(
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.green[700],
-  //                     borderRadius: BorderRadius.circular(4),
-  //                   ),
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Icon(
-  //                         Icons.account_circle,
-  //                         color: Colors.white,
-  //                         size: 30,
-  //                       ),
-  //                       Text(
-  //                         "Prozone",
-  //                         style: TextStyle(color: Colors.black),
-  //                       ),
-  //                       Text(
-  //                         "Mall",
-  //                         style: TextStyle(color: Colors.white),
-  //                       )
-  //                     ],
-  //                   ),
-  //                   width: double.infinity,
-  //                   height: double.infinity,
-  //                 ),
-  //               ),
-  //               Triangle.isosceles(
-  //                 edge: Edge.BOTTOM,
-  //                 child: Container(
-  //                   color: Colors.green[700],
-  //                   width: 20.0,
-  //                   height: 10.0,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         prozone,
-  //       );
-  //     },
-  //
-  //     // infoWindow: InfoWindow(
-  //     //   title: 'Prozone',
-  //     //   snippet: 'Mall',
-  //     //   onTap: () {
-  //     //     _onMarkerTapped('Prozone Mall', 'Mall',11.0548, 76.9941);
-  //     //   },
-  //     // ),
-  //     // icon: BitmapDescriptor.defaultMarker,
-  //     icon: markerIcon,
-  //   ),
-  // ];
-
-  Future<void> _addMarkerWithDialog() async {
-    double lat = 0;
-    double lng = 0;
-    String name = '';
-    String snippet = '';
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Add Marker'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Latitude'),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  lat = double.tryParse(value) ?? 0;
-                },
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Longitude'),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  lng = double.tryParse(value) ?? 0;
-                },
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Name'),
-                onChanged: (value) {
-                  name = value;
-                },
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Snippet'),
-                onChanged: (value) {
-                  snippet = value;
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _addMarker(lat, lng, name, snippet);
-                print(_otherMarkers.length);
-                print(_otherMarkers);
-              },
-              child: Text('Add'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
-  addCustomIcon()  async{
-    BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(0.5,0.5)),
+  Future <void> addCustomIcon()  async{
+    await BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(0.5,0.5)),
         'assets/image2.png')
         .then((icon) {
       setState(() {
         markerIcon = icon;
+        print(markerIcon);
       });
       // markerIcon = icon;
     }
     );
 
-    final Uint8List markIcons = await getImages('assets/image2.png', 50);
+    // final Uint8List markIcons = await getImages('assets/error.jpeg', 50);
   }
 
-  Future<Uint8List> getImages(String path, int width) async{
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetHeight: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return(await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  // Future<Uint8List> getImages(String path, int width) async{
+  //   ByteData data = await rootBundle.load(path);
+  //   ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetHeight: width);
+  //   ui.FrameInfo fi = await codec.getNextFrame();
+  //   return(await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  //
+  // }
 
-  }
 
-  void _addMarker(double latitude, double longitude, String name, String snippet) {
-    final newMarker = Marker(
-      markerId: MarkerId(name),
-      position: LatLng(latitude, longitude),
-      // infoWindow: InfoWindow(
-      //   title: name,
-      //   snippet: snippet,
-      //   onTap: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => MarkerDetailsPage(title: name, snippet: snippet,lat:latitude ,long: longitude,),
-      //       ),
-      //     );
-      //   },
-      // ),
-      onTap: () {
-        _customInfoWindowController.addInfoWindow!(
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MarkerDetailsPage(title: name, snippet: snippet,lat:latitude ,long: longitude,),
-                ),
-              );
-            },
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green[700],
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.account_circle,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        Text(
-                          name,style: TextStyle(color: Colors.black),
-                        ),
-                        Text(
-                          snippet,
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                ),
-                Triangle.isosceles(
-                  edge: Edge.BOTTOM,
-                  child: Container(
-                    color: Colors.green[700],
-                    width: 20.0,
-                    height: 10.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          LatLng(latitude, longitude),
-        );
-      },
-      //icon: BitmapDescriptor.defaultMarker,
-      icon: markerIcon,
-    );
 
-    setState(() {
-      _otherMarkers.add(newMarker);
-    });
-  }
 
-  void centerMapToCurrentLocation() {
-    if (_controller.isCompleted && currentLocation != null) {
-      _controller.future.then((controller) {
-        controller.animateCamera(
-          CameraUpdate.newLatLng(
-            LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-          ),
-        );
-      });
-    }
-  }
 
-  void showBottomSheet(BuildContext context) {
-    _otherMarkers = List.from(_otherMarkers.where((marker) => marker.markerId != const MarkerId("Current location")));
-    _otherMarkers.sort((a, b) {
-      double distanceToA = calculateDistanceInKm(
-        currentLocation!.latitude!,
-        currentLocation!.longitude!,
-        a.position.latitude,
-        a.position.longitude,
-      );
-      double distanceToB = calculateDistanceInKm(
-        currentLocation!.latitude!,
-        currentLocation!.longitude!,
-        b.position.latitude,
-        b.position.longitude,
-      );
-      return distanceToA.compareTo(distanceToB);
-    });
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.6, // Initial size when the sheet is shown
-          minChildSize: 0.2,     // Minimum size the sheet can be dragged to
-          maxChildSize: 1.0,     // Maximum size the sheet can be dragged to
-          expand: false,         // Whether the sheet can expand to its maximum size
-
-          builder: (context, scrollController) {
-            return ListView.builder(
-              controller: scrollController,
-              itemCount: _otherMarkers.length,
-              itemBuilder: (context, index) {
-                final marker = _otherMarkers[index];
-
-                double distanceInKm = calculateDistanceInKm(
-                  currentLocation!.latitude!,
-                  currentLocation!.longitude!,
-                  marker.position.latitude,
-                  marker.position.longitude,
-                );
-
-                return ListTile(
-                  leading: Icon(Icons.location_pin),
-                  title: Text(marker.infoWindow.title ?? ''),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(marker.infoWindow.snippet ?? ''),
-                      Text('Distance: ${distanceInKm.toStringAsFixed(2)} km'),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MarkerDetailsPage(
-                          title: marker.infoWindow.title ?? '',
-                          snippet: marker.infoWindow.snippet ?? '',
-                          lat: marker.position.latitude,
-                          long: marker.position.longitude,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        );
-      },
-    );
-  }
-
-  double calculateDistanceInKm(double lat1, double lon1, double lat2, double lon2) {
-    const double earthRadius = 6371; // in km
-    double dLat = degreesToRadians(lat2 - lat1);
-    double dLon = degreesToRadians(lon2 - lon1);
-    double a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(degreesToRadians(lat1)) * cos(degreesToRadians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    double distance = earthRadius * c;
-    return distance;
-  }
-
-  double degreesToRadians(double degrees) {
-    return degrees * (pi / 180);
-  }
 
   TextEditingController _searchController = TextEditingController();
 
@@ -823,7 +292,7 @@ class _MapDisplayState extends State<MapDisplay> {
     // DBAddStation();
     _fetchData();
     getCurrentLocation();
-     addCustomIcon();
+     //addCustomIcon();
 
 
     super.initState();
@@ -886,6 +355,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ? Center(child: CircularProgressIndicator())
             :Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(

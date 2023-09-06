@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'HomePage.dart';
 import 'LoginScreen.dart';
 import 'Provider.dart';
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Charge Partners Admin Panel',
-        home: LoginScreen(),
+        home: HomePage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/Login': (context) => LoginScreen(),
