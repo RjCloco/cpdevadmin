@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
                       top: 0,
                       child: SizedBox(
                         child: Container(
+
                           height: 200,
                           width: MediaQuery.of(context).size.width/1.2,
                           decoration: BoxDecoration(

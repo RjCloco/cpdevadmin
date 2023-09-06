@@ -355,6 +355,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ? Center(child: CircularProgressIndicator())
             :Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
