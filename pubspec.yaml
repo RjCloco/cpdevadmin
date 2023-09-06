@@ -47,6 +47,8 @@ dependencies:
   custom_info_window: ^1.0.1  #added
   clippy_flutter: ^2.0.0-nullsafety.1  #added
   provider: ^6.0.5
+  the_widget_marker: ^1.0.0
+
 
 
 

@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Charge Partners Admin Panel',
-        home: LoginScreen(),
+        home: HomePage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/Login': (context) => LoginScreen(),

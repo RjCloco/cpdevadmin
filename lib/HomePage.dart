@@ -14,30 +14,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  Future<void> _signOut() async {
-    print("logout");
-    try {
-      await FirebaseAuth.instance.signOut();
-      print(FirebaseAuth.instance.authStateChanges());
-      Navigator.push(context,MaterialPageRoute(builder: (context)=> LoginScreen()));
-    } catch (e) {
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
-      // body: Column(
-      //   children: [
-      //     Text("Home Page"),
-      //     ElevatedButton(onPressed: () async {
-      //       await _signOut();
-      //     }, child: Text("LOG OUT"))
-      //   ],
-      // ),
       body: Row(
         children: [
           Expanded(
@@ -45,7 +27,6 @@ class _HomePageState extends State<HomePage> {
             child: SideBar(),
           ),
           Expanded(
-
             flex: 5,
               child: Container(
                 decoration: BoxDecoration(
@@ -65,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                       child: SizedBox(
                         child: Container(
                           height: 200,
-                          width: 1200,
+                          width: MediaQuery.of(context).size.width/1.2,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage("assets/graphic_slide.jpeg"),
@@ -73,11 +54,11 @@ class _HomePageState extends State<HomePage> {
                             )
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(18.0),
+                            padding: const EdgeInsets.only(right: 18.0,left: 18.0,top:8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 15,),
+                                SizedBox(height: 10,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -113,6 +94,19 @@ class _HomePageState extends State<HomePage> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Icon(Icons.mail,color: Colors.white,),
                                         ),
+                                        Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: CircleAvatar(
+                                                radius: 20.0,
+                                                backgroundImage:
+                                                AssetImage('assets/avatar.png'),
+                                                backgroundColor: Colors.transparent,
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                  },
+                                                )
+                                            )
+                                        )
 
                                       ],
                                     )
@@ -136,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Positioned(
                       top: 160,
-                      left: 20,
+                      left: MediaQuery.of(context).size.height/36,
                       child: Container(
                         width: 1160, // Set the width as needed
                         height: 550, // Set the height as needed
@@ -144,9 +138,8 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(top:20.0,right: 18.0,left: 18.0,bottom: 18.0),
+                          padding: const EdgeInsets.only(top: 20.0,right: 18.0,left: 18.0,bottom: 18.0),
                           child: MapDisplay(),
-                          // child: Text(""),
                         ),
                       ),
                     ),
