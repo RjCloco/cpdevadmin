@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'app_colors.dart';
 import 'app_styles.dart';
-
+String AdminEmail = '';
+String AdminName='';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -38,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
  // FirebaseFirestore firestore = FirebaseFirestore.instance;
  //  List<Map<String, dynamic>> adminDataList = [];
   CollectionReference ref = FirebaseFirestore.instance.collection('Admin');
-  String AdminEmail = '';
+
   String ResetEmail ='';
   String AdminPassword = '';
   late final userDoc;
@@ -59,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           String email = admin['Email'] ?? ''; // Replace 'email' with the actual field name
           // String password = admin['Password'] ?? ''; // Replace 'password' with the actual field name
           AdminEmail = email;
+          AdminName =admin['Name'] ;
           // AdminPassword = password;
           // print(AdminEmail);
           // print(AdminPassword);

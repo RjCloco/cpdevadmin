@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'AssetManagement.dart';
+import 'CRM.dart';
 import 'HomePage.dart';
 import 'LoginScreen.dart';
 import 'Provider.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -20,6 +23,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/Login': (context) => LoginScreen(),
           '/Dashboard': (context)=>HomePage(),
+          '/AssetManagement': (context)=>AssetManagement(),
+          '/CRM': (context)=>CRM()
         },
       ),
     );

@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SidebarProvider extends ChangeNotifier {
@@ -9,6 +10,7 @@ class SidebarProvider extends ChangeNotifier {
   int second =0;
   int third =0;
   String Vname = "";
+   List<DocumentSnapshot<Object?>> stationData=[];
 
   //int get currentPageIndex => _currentPageIndex;
 

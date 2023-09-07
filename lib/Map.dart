@@ -67,6 +67,7 @@ library maps_launcher;
 import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'package:the_widget_marker/the_widget_marker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
@@ -80,6 +81,8 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+import 'Provider.dart';
 
 class MapDisplay extends StatefulWidget {
   const MapDisplay({Key? key}) : super(key: key);
@@ -122,23 +125,20 @@ class _MapDisplayState extends State<MapDisplay> {
     });
   }
 
-  void _fetchData() {
+  Future<List<DocumentSnapshot>> fetchData() async {
     // Get a reference to the 'StationManagement' collection
     CollectionReference stationCollection = FirebaseFirestore.instance.collection('StationManagement');
 
-    stationCollection.where('ActiveStatus', isEqualTo: true).get().then((querySnapshot) {
-      // Execute the asynchronous work first
-      setState(() {
-        stationData = querySnapshot.docs;
-      });
-
-      // Then, update the state synchronously
-      AddStationdata();
-    }).catchError((error) {
+    try {
+      QuerySnapshot querySnapshot = await stationCollection.where('ActiveStatus', isEqualTo: true).get();
+      return querySnapshot.docs;
+    } catch (error) {
       // Handle any errors that occur during the data fetch
       print('Error fetching data: $error');
-    });
+      return [];
+    }
   }
+
 
 
   Future<void> DBAddStation()async {
@@ -163,37 +163,31 @@ class _MapDisplayState extends State<MapDisplay> {
 
   }
 
-  void  AddStationdata() {
+  Future<void>  AddStationdata(List<DocumentSnapshot<Object?>> stationData) async {
+
     for (var document in stationData) {
-      setState(() async {
-        _otherMarkers.add(
-            Marker(
-              markerId:MarkerId(document['StationName']),
-              position: LatLng(document['Latitude'],document['Longitude']),
-                infoWindow: InfoWindow(
-                        title: document['StationName'],
-                        snippet:document['Description'],
-                        onTap: () {
-                          _onMarkerTapped(document['ChargingStation'], document['Description'],document['Latitude'], document['Longitude']);
-                        },
-                      ),
-              // icon: markerIcon,
-                icon: await MarkerIcon.downloadResizePictureCircle(
-                'assets/error.jpeg',
-                size: 150,
-                addBorder: true,
-                borderColor: Colors.white,
-                borderSize: 15
-                ),
-
+      _otherMarkers.add(
+        Marker(
+            markerId:MarkerId(document['StationName']),
+            position: LatLng(document['Latitude'],document['Longitude']),
+            infoWindow: InfoWindow(
+              title: document['StationName'],
+              snippet:document['Description'],
+              onTap: () {
+                _onMarkerTapped(document['ChargingStation'], document['Description'],document['Latitude'], document['Longitude']);
+              },
+            ),
+            //icon: markerIcon,
+            icon: await MarkerIcon.downloadResizePictureCircle(
+            'assets/image2.png',
+            size: 50,
+            addBorder: true,
+            borderColor: Colors.white,
+            borderSize: 15
         ),
-
-        );
-      });
-
-      // Add more fields as needed
-    }
-    // print(_otherMarkers);
+      ),
+    );// Add more fields as needed
+  }
   }
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
@@ -290,8 +284,7 @@ class _MapDisplayState extends State<MapDisplay> {
   @override
   void initState() {
     // DBAddStation();
-    _fetchData();
-    getCurrentLocation();
+    //getCurrentLocation();
      //addCustomIcon();
 
 
@@ -309,222 +302,83 @@ class _MapDisplayState extends State<MapDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    if (currentLocation != null) {
-      _otherMarkers.add(
-        Marker(
-          markerId: const MarkerId("Current location"),
-          position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-          infoWindow: InfoWindow(
-            title: 'Current Location',
-            snippet: ('${LatLng(currentLocation!.latitude!, currentLocation!.longitude!)}'),
-          ),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-          // icon: markerIcon,
-        ),
-      );
-    }
-    return WillPopScope(
-      onWillPop: () async {
-        final shouldPop = await showDialog<bool>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Do you want to go back?'),
-              actionsAlignment: MainAxisAlignment.spaceBetween,
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                  child: const Text('Yes'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: const Text('No'),
-                ),
-              ],
-            );
-          },
-        );
-        return shouldPop!;
-      },
-      child: Scaffold(
-        body: currentLocation == null
-            ? Center(child: CircularProgressIndicator())
-            :Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Map View",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                Row(
+    // if (currentLocation != null) {
+    //   _otherMarkers.add(
+    //     Marker(
+    //       markerId: const MarkerId("Current location"),
+    //       position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+    //       infoWindow: InfoWindow(
+    //         title: 'Current Location',
+    //         snippet: ('${LatLng(currentLocation!.latitude!, currentLocation!.longitude!)}'),
+    //       ),
+    //       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    //       // icon: markerIcon,
+    //     ),
+    //   );
+    // }
+    final sidebarProvider = Provider.of<SidebarProvider>(context);
+    return FutureBuilder<List<DocumentSnapshot>>(
+        future: fetchData(),
+        builder: (BuildContext context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            sidebarProvider.stationData = snapshot.data!;
+            AddStationdata(stationData);
+            return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color:  Color(0xFFDEE3E7)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.map
+                      width: 300,
+                      height: 30,
+                      child: TextFormField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Search location..',
+                          filled: true, // Add a background color to the TextField
+                          fillColor:  Color(0xFFDEE3E7), // Set the background color of the TextField
+                          prefixIcon: IconButton(
+                            onPressed: _onSearchIconPressed,
+                            icon: Icon(Icons.search),
+                          ),
                         ),
                       ),
                     ),
+                    SizedBox(height: 20,),
                     Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color:  Color(0xFFDEE3E7)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.list_alt
+                      height: 400,
+                      width: 1200,
+                      child: GoogleMap(
+                        onMapCreated: (GoogleMapController controller) async {
+                          _customInfoWindowController.googleMapController = controller;
+                        },
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(20.5937, 78.9629), // Coordinates for the center of India
+                          zoom: 5, // Adjust the zoom level as needed
                         ),
+
+                        onTap: (position) {
+                          _customInfoWindowController.hideInfoWindow!();
+                        },
+                        onCameraMove: (position) {
+                          _customInfoWindowController.onCameraMove!();
+                        },
+
+
+                        markers: Set<Marker>.from(_otherMarkers),
                       ),
                     ),
                   ],
-                )
-              ],
-            ),
-            SizedBox(height: 10,),
-            Container(
-              width: 300,
-              child: SizedBox(
-                height: 30,
-                child: TextFormField(
-                              controller: _searchController,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Search location..',
-                                filled: true, // Add a background color to the TextField
-                                fillColor:  Color(0xFFDEE3E7), // Set the background color of the TextField
-                                prefixIcon: IconButton(
-                                  onPressed: _onSearchIconPressed,
-                                  icon: Icon(Icons.search),
-                                ),
-                              ),
-                            ),
-              ),
-            ),
-          SizedBox(height: 20,),
-          Container(
-            height: 400,
-            width: 1200,
-            child: GoogleMap(
-                    onMapCreated: (GoogleMapController controller) async {
-                      _customInfoWindowController.googleMapController = controller;
-                    },
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-                      zoom: 15,
-                    ),
-                    onTap: (position) {
-                      _customInfoWindowController.hideInfoWindow!();
-                    },
-                    onCameraMove: (position) {
-                      _customInfoWindowController.onCameraMove!();
-                    },
+                );
 
+          }
+        },
+      );
 
-                    markers: Set<Marker>.from(_otherMarkers),
-                  ),
-          ),
-          ],
-        )
-        //     : Stack(
-        //   children: [
-        //
-        //     Positioned(
-        //       child: GoogleMap(
-        //         // onMapCreated: (GoogleMapController controller) {
-        //         //   _controller.complete(controller);
-        //         // },
-        //         onMapCreated: (GoogleMapController controller) async {
-        //           _customInfoWindowController.googleMapController = controller;
-        //         },
-        //         initialCameraPosition: CameraPosition(
-        //           target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-        //           zoom: 15,
-        //         ),
-        //         // initialCameraPosition: CameraPosition(
-        //         //   target: officeLoc,
-        //         //   zoom: 15,
-        //         // ),
-        //         onTap: (position) {
-        //           _customInfoWindowController.hideInfoWindow!();
-        //         },
-        //         onCameraMove: (position) {
-        //           _customInfoWindowController.onCameraMove!();
-        //         },
-        //
-        //         markers: Set<Marker>.from(_otherMarkers),
-        //       ),
-        //     ),
-        //
-        //     Positioned(
-        //       top: 0,
-        //       left: 0,
-        //       right: 0,
-        //       child: Container(
-        //         margin: EdgeInsets.symmetric(vertical: 10), // Add margin to the TextField
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(10.0),
-        //           child: TextField(
-        //             controller: _searchController,
-        //             decoration: InputDecoration(
-        //               hintText: 'Search for a location',
-        //               filled: true, // Add a background color to the TextField
-        //               fillColor: Colors.white, // Set the background color of the TextField
-        //               border: OutlineInputBorder(
-        //                 borderSide: BorderSide.none, // Remove border
-        //                 borderRadius: BorderRadius.circular(18), // Add border radius
-        //               ),
-        //               suffixIcon: IconButton(
-        //                 onPressed: _onSearchIconPressed,
-        //                 icon: Icon(Icons.search),
-        //               ),
-        //             ),
-        //             onSubmitted: (_) {
-        //               _onSearchIconPressed();
-        //             },
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     Positioned(
-        //       bottom: 75,
-        //       left: 15,
-        //       child: CircleAvatar(
-        //         backgroundColor: Colors.green[700],
-        //         radius: 28,
-        //         child: IconButton(
-        //           onPressed: (){
-        //             _addMarkerWithDialog();
-        //             print(_otherMarkers.length);
-        //           },
-        //
-        //           icon: Icon(Icons.add_location_alt_outlined),
-        //           color: Colors.white,
-        //         ),
-        //       ),
-        //     ),
-        //
-        //     CustomInfoWindow(
-        //       controller: _customInfoWindowController,
-        //       height: 75,
-        //       width: 150,
-        //       offset: 50,
-        //     ),
-        //   ],
-        // ),
-      ),
-    );
   }
 }
 
