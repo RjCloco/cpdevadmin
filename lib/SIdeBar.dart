@@ -61,387 +61,33 @@ class _SideBarState extends State<SideBar> {
                     Text("CHARGE PARTNERS",style: TextStyle(color: Colors.white,fontSize: 15),)
                   ],
                 ),
-                GestureDetector(
-                  onTap: (){
-                    sidebarProvider.navigateToPage(0);
-                    Navigator.pushReplacementNamed(context, '/Dashboard');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: currentPageIndex == 0 ? Color(0x7E3475A2):null,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                              child: Icon(Icons.bar_chart,color: Colors.blue,),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: Text("Dashboard",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          )
-
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                NavigationMenuItem(route: '/Dashboard', text: 'Dashboard', icon: Icons.bar_chart, index: 0,),
                 SizedBox(height: 25,),
-                Container(
-                  decoration: BoxDecoration(
-                      color: currentPageIndex == 1 ? Color(0x7E3475A2): null
-                  ),
-                  child: GestureDetector(
-                    onTap: (){
-                      sidebarProvider.navigateToPage(1);
-                      //Navigator.pushReplacementNamed(context, '/Dashboard');
-                    },
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child:  Padding(
-                            padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                            child: Icon(Icons.credit_card,color: Colors.blue,),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: Text("Business KPI",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                        )
-
-                      ],
-                    ),
-                  ),
-                ),
+                NavigationMenuItem(index: 1, route: '/BusinessKPI', text: "Business KPI", icon: Icons.credit_card),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.alarm,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Alarm Summary",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 2, route: '/AlarmSummary', text: "Alarm Summary", icon: Icons.alarm),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.earbuds_battery,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Charging Network",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 3, route: '/ChargingNetwork', text: "Charging Network", icon: Icons.earbuds_battery),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.web_asset,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Asset Management",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 4, route: '/AssetManagement', text: "Asset Management", icon: Icons.web_asset),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    sidebarProvider.navigateToPage(5);
-                    Navigator.pushReplacementNamed(context, '/CRM');
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.groups,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("CRM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 5, route: '/CRM', text: "CRM", icon: Icons.groups),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.speaker_phone,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("RFID Management",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 6, route: '/RFIDManagement', text: "RFID Management", icon: Icons.speaker_phone),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.supervised_user_circle_outlined,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Accounts",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 7, route: '/Accounts', text: "Accounts", icon: Icons.supervised_user_circle_outlined),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.mail_outline,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Tariff Management",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 8, route: '/TariffManagement', text: "Tariff Management", icon: Icons.mail_outline),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.support_agent,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("CPO Support",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 9, route: '/CPOSupport', text: "CPO Support", icon: Icons.support_agent),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.notifications,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Notifications",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 10, route: '/Notifications', text: "Notifications", icon: Icons.notifications),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.add_chart_rounded,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Reports",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 11, route: '/Reports', text: "Reports", icon: Icons.add_chart_rounded),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.settings,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Settings",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 12, route: '/Settings', text: "Settings", icon: Icons.settings),
                 SizedBox(height: 25,),
-                GestureDetector(
-                  onTap: (){
-                    print("tapped");
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: Icon(Icons.help,color: Colors.blue,),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("Help",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                      )
-
-                    ],
-                  ),
-                ),
+                NavigationMenuItem(index: 13, route: '/Help', text: "Help", icon: Icons.help),
                 SizedBox(height: 25,),
                 GestureDetector(onTap: (){
                   print("tapped");
@@ -479,6 +125,66 @@ class _SideBarState extends State<SideBar> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NavigationMenuItem extends StatelessWidget {
+  final String route;
+  final int index;
+  final String text;
+  final IconData icon;
+
+  NavigationMenuItem({
+    required this.index,
+    required this.route,
+    required this.text,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final sidebarProvider = Provider.of<SidebarProvider>(context);
+    final currentPageIndex = sidebarProvider.currentPageIndex;
+    return GestureDetector(
+      onTap: () {
+        sidebarProvider.navigateToPage(index);
+        Navigator.pushReplacementNamed(context, route);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8.0),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: currentPageIndex == index ? Color(0x7E3475A2) : null,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                  child: Icon(icon, color: Colors.blue),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 18.0),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

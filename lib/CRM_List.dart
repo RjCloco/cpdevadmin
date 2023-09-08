@@ -1,80 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Listview extends StatefulWidget {
-  const Listview({Key? key}) : super(key: key);
+class CRMList extends StatefulWidget {
+  const CRMList({super.key});
 
   @override
-  State<Listview> createState() => _ListviewState();
+  State<CRMList> createState() => _CRMListState();
 }
 
-class _ListviewState extends State<Listview> {
+class _CRMListState extends State<CRMList> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 150.0,
-                    height: 30.0,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1046A8),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Customer',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 150.0,
-                    height: 30.0,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFD3D3D3),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Group',
-                        style: TextStyle(color: Color(0xFF1046A8),),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // SizedBox(width: 15.0), // Add spacing between "Customer" and "Group"
-              //SizedBox(width: 850.0),// Spacer to push the button to the rightmost corner
-              Container(
-                width: 100.0,
-                height: 30.0,
-                decoration: BoxDecoration(
-                  color: Color(0xFF1046A8),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Add your +Add button functionality here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF1046A8) ,// White color for the button background
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7.0),
-                    ),
-                  ),
-                  child: Text(
-                    '+Add',
-                    style: TextStyle(color: Colors.white,),
-                  ),
-                ),
-              ),
-            ],
-          ),
           SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
@@ -205,7 +142,7 @@ class _ListviewState extends State<Listview> {
             ],
           ),
         ],
-      ),
-    );
+      );
   }
 }
+

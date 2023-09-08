@@ -13,6 +13,7 @@ class ListDisplay extends StatefulWidget {
 class _ListDisplayState extends State<ListDisplay> {
   TextEditingController ListSearch = new TextEditingController();
   void handleClick(int item) {
+
     switch (item) {
       case 0:
         {

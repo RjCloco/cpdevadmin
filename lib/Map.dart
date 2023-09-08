@@ -325,7 +325,7 @@ class _MapDisplayState extends State<MapDisplay> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
           sidebarProvider.stationData = snapshot.data!;
-          print('Other markers: $_otherMarkers');
+          // print('Other markers: $_otherMarkers');
           return FutureBuilder<void>(
             future: AddStationdata(sidebarProvider.stationData),
             builder: (BuildContext context, AsyncSnapshot<void> addStationSnapshot) {
@@ -364,8 +364,8 @@ class _MapDisplayState extends State<MapDisplay> {
                           _customInfoWindowController.googleMapController = controller;
                         },
                         initialCameraPosition: CameraPosition(
-                          target: LatLng(11.1271, 78.6569),
-                          zoom: 7,
+                          target: LatLng(11.1271, 76.6569),
+                          zoom: 10, // Adjust the zoom level as needed
                         ),
                         onTap: (position) {
                           _customInfoWindowController.hideInfoWindow!();
