@@ -35,8 +35,8 @@ class _SideBarState extends State<SideBar> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFF242B5C), // Dark blue background color
-                Colors.black, // Black color for gradient
+                Color(0xFF090D2E), // Dark blue background color
+                Color(0xFF080B1E) // Black color for gradient
               ],
             ),
             border: Border(
@@ -71,7 +71,7 @@ class _SideBarState extends State<SideBar> {
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        color: currentPageIndex == 0 ? Colors.black26:null,
+                        color: currentPageIndex == 0 ? Color(0x7E3475A2):null,
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: Row(
@@ -100,7 +100,7 @@ class _SideBarState extends State<SideBar> {
                 SizedBox(height: 25,),
                 Container(
                   decoration: BoxDecoration(
-                      color: currentPageIndex == 1 ? Colors.black26: null
+                      color: currentPageIndex == 1 ? Color(0x7E3475A2): null
                   ),
                   child: GestureDetector(
                     onTap: (){
@@ -210,7 +210,8 @@ class _SideBarState extends State<SideBar> {
                 SizedBox(height: 25,),
                 GestureDetector(
                   onTap: (){
-                    print("tapped");
+                    sidebarProvider.navigateToPage(5);
+                    Navigator.pushReplacementNamed(context, '/CRM');
                   },
                   child: Row(
                     children: [
@@ -441,6 +442,7 @@ class _SideBarState extends State<SideBar> {
                     ],
                   ),
                 ),
+                SizedBox(height: 25,),
                 GestureDetector(onTap: (){
                   print("tapped");
                   _signOut();
@@ -455,11 +457,14 @@ class _SideBarState extends State<SideBar> {
                     child:Center(
                       child: Row(
                         children: [
-                          Text(
-                            'Logout',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14// Set text color
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Text(
+                              'Logout',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14// Set text color
+                              ),
                             ),
                           ),
                           Icon(
