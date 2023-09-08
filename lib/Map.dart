@@ -97,7 +97,6 @@ class _MapDisplayState extends State<MapDisplay> {
   GoogleMapController? _mapController;
   CustomInfoWindowController _customInfoWindowController =
   CustomInfoWindowController();
-  List<DocumentSnapshot> stationData = [];
 
   static const LatLng officeLoc = LatLng(11.0201, 76.9627); //cloco office
   static const LatLng funmall = LatLng(11.0247, 77.0106); //Fun mall
@@ -164,7 +163,6 @@ class _MapDisplayState extends State<MapDisplay> {
   }
 
   Future<void>  AddStationdata(List<DocumentSnapshot<Object?>> stationData) async {
-
     for (var document in stationData) {
       _otherMarkers.add(
         Marker(
@@ -177,16 +175,17 @@ class _MapDisplayState extends State<MapDisplay> {
                 _onMarkerTapped(document['ChargingStation'], document['Description'],document['Latitude'], document['Longitude']);
               },
             ),
-            //icon: markerIcon,
+            // icon: markerIcon,
             icon: await MarkerIcon.downloadResizePictureCircle(
             'assets/image2.png',
-            size: 50,
+            size: 40,
             addBorder: true,
             borderColor: Colors.white,
             borderSize: 15
         ),
       ),
     );// Add more fields as needed
+      //print(_otherMarkers);
   }
   }
 
@@ -277,7 +276,7 @@ class _MapDisplayState extends State<MapDisplay> {
 
   @override
   void dispose() {
-    _customInfoWindowController.dispose();
+    //_customInfoWindowController.dispose();
     super.dispose();
   }
 
@@ -318,16 +317,24 @@ class _MapDisplayState extends State<MapDisplay> {
     // }
     final sidebarProvider = Provider.of<SidebarProvider>(context);
     return FutureBuilder<List<DocumentSnapshot>>(
-        future: fetchData(),
-        builder: (BuildContext context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            sidebarProvider.stationData = snapshot.data!;
-            AddStationdata(stationData);
-            return Column(
+      future: fetchData(),
+      builder: (BuildContext context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          sidebarProvider.stationData = snapshot.data!;
+          print('Other markers: $_otherMarkers');
+          return FutureBuilder<void>(
+            future: AddStationdata(sidebarProvider.stationData),
+            builder: (BuildContext context, AsyncSnapshot<void> addStationSnapshot) {
+              if (addStationSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (addStationSnapshot.hasError) {
+                return Center(child: Text('Error: ${addStationSnapshot.error}'));
+              } else {
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -339,8 +346,8 @@ class _MapDisplayState extends State<MapDisplay> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search location..',
-                          filled: true, // Add a background color to the TextField
-                          fillColor:  Color(0xFFDEE3E7), // Set the background color of the TextField
+                          filled: true,
+                          fillColor: Color(0xFFDEE3E7),
                           prefixIcon: IconButton(
                             onPressed: _onSearchIconPressed,
                             icon: Icon(Icons.search),
@@ -357,27 +364,27 @@ class _MapDisplayState extends State<MapDisplay> {
                           _customInfoWindowController.googleMapController = controller;
                         },
                         initialCameraPosition: CameraPosition(
-                          target: LatLng(20.5937, 78.9629), // Coordinates for the center of India
-                          zoom: 5, // Adjust the zoom level as needed
+                          target: LatLng(11.1271, 78.6569),
+                          zoom: 7,
                         ),
-
                         onTap: (position) {
                           _customInfoWindowController.hideInfoWindow!();
                         },
                         onCameraMove: (position) {
                           _customInfoWindowController.onCameraMove!();
                         },
-
-
                         markers: Set<Marker>.from(_otherMarkers),
                       ),
                     ),
                   ],
                 );
+              }
+            },
+          );
+        }
+      },
+    );
 
-          }
-        },
-      );
 
   }
 }
