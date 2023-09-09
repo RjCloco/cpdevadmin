@@ -110,7 +110,6 @@ class _CRMListState extends State<CRMList> {
             ),
           ),
           SizedBox(height: 20.0), // Spacing below the search section
-
           // Add DataTable with headers and rows
           DataTable(
             columns: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class CRMGrid extends StatefulWidget {
   const CRMGrid({super.key});
@@ -36,7 +37,24 @@ class _CRMGridState extends State<CRMGrid> {
    'View',
    'Edit',
  ];
-  @override
+
+ void onDropdownItemSelected(String selectedItem) {
+   // Perform the desired action here, e.g., navigate to a new screen
+  if(selectedItem =='View'){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Edit(),
+      ),
+    );
+  }
+  else{
+    print("Edit");
+
+  }
+ }
+
+ @override
   Widget build(BuildContext context) {
    return Padding(
      padding: const EdgeInsets.only(top:38.0),
@@ -89,9 +107,6 @@ class _CRMGridState extends State<CRMGrid> {
                          ),
                        ),
                        DropdownButton(
-                         // Initial Value
-                         // value: dropdownvalue,
-                         // Down Arrow Icon
                          icon: const Icon(Icons.more_vert_sharp),
                          // Array list of items
                          items: dropdown.map((String items) {
@@ -106,7 +121,7 @@ class _CRMGridState extends State<CRMGrid> {
                            setState(() {
                              dropdownvalue = newValue!;
                            });
-                         },
+                         }, //onDropdownItemSelected(dropdownvalue);
                        ),
                        // PopupMenuButton(
                        //   child: Container(
@@ -160,6 +175,178 @@ class _CRMGridState extends State<CRMGrid> {
        ),
      ),
    );
+  }
+}
+
+
+class Edit extends StatefulWidget {
+  @override
+  _EditState createState() => _EditState();
+}
+
+class _EditState extends State<Edit> {
+  String selectedCountryCode = "+1"; // Default country code
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Add New Group",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Divider(
+              color: Colors.black, // Set the color of the line
+              thickness: 0.3, // Set the thickness of the line
+              height: 20, // Set the height of the line (space below text)
+            ),
+            Form(
+              key: formKey,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black, // Set the border color
+                          width: 1.0, // Set the border width
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Group Name',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Contact Person Name',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          IntlPhoneField(
+                            onChanged: (phone) {
+                              // completeNum = phone.completeNumber;
+                            },
+                            decoration: InputDecoration(
+                              enabledBorder: InputBorder.none,
+                              hintText: 'Enter Phone Number',
+                              labelText: 'Phone Number',
+                              hintStyle: TextStyle(fontSize: 15),
+                              labelStyle: TextStyle(fontSize: 14),
+                            ),
+                            initialCountryCode: 'IN',
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Contact Person E-Mail',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Billing Invoice Type',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black, // Set the border color
+                          width: 1.0, // Set the border width
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('GST IN'),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Enter GSTIN',
+                                  border: OutlineInputBorder(), // Remove the default border
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'PAN Number',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Enter full address',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Field 9',
+                              border:
+                              OutlineInputBorder(), // Remove the default border
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
