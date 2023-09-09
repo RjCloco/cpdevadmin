@@ -134,13 +134,7 @@ class _CRMState extends State<CRM> {
 
                             ),
                             if (index == 0) CRMList(),
-                             if (index == 1)...[
-                               Container(
-                                 height: 400,
-                                 width: 800,
-                                 child: CRMGrid(),
-                               )
-                             ],
+                             if (index == 1) CRMGrid()
                           ],
                         )
                       ),
