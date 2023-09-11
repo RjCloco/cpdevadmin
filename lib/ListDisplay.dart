@@ -13,10 +13,12 @@ class ListDisplay extends StatefulWidget {
 class _ListDisplayState extends State<ListDisplay> {
   TextEditingController ListSearch = new TextEditingController();
   void handleClick(int item) {
-
+    final sidebarProvider = Provider.of<SidebarProvider>(context,listen: false);
     switch (item) {
       case 0:
         {
+
+          sidebarProvider.navigateToPage(4);
           Navigator.pushNamed(context, '/AssetManagement');
           break;
         }

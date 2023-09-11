@@ -8,6 +8,11 @@ import 'app_colors.dart';
 import 'app_styles.dart';
 String AdminEmail = '';
 String AdminName='';
+RegExp email_valid = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+
+bool validateEmail(String email) {
+  return email_valid.hasMatch(email);
+}
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -22,11 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   RegExp pass_valid = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
-  RegExp email_valid = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
 
-  bool validateEmail(String email) {
-    return email_valid.hasMatch(email);
-  }
   bool validatePassword(String pass){
     String _password = pass.trim();
     if(pass_valid.hasMatch(_password)){
@@ -46,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late final userData;
 
   Future<void> fetchAdminData() async {
+
     try {
       QuerySnapshot adminSnapshot = await ref.where('DeleteStatus', isEqualTo: false).get();
       userDoc = adminSnapshot.docs.first;
